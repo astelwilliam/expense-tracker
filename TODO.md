@@ -26,3 +26,15 @@
 - [x] Update home.html to include delete buttons/forms for each expense
 - [x] Add CSS styling for delete buttons in style.css
 - [ ] Test deleting expenses and verify security (only own expenses)
+
+## Phase 1 MVP Enhancements
+
+- [x] Add 'notes' field to Expense model as optional TextField
+- [x] Create and apply migration for the notes field
+- [x] Update ExpenseForm to include notes field as textarea
+- [x] Modify add_expense.html and home.html to display notes
+- [x] Add filtering functionality: Create new views for day/week/month expense lists
+- [x] Add URL patterns for the new filter views
+- [x] Create templates for filtered views (extend base.html)
+- [x] Enhance home page with basic monthly summary (total spent this month)
+- [x] Update navigation to include links to filtered views

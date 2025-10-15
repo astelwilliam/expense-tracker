@@ -34,8 +34,26 @@ def logout_view(request):
 
 @login_required
 def home_view(request):
+    from django.db.models import Sum
+    from django.db.models.functions import TruncMonth
+    from datetime import datetime
+
     expenses = Expense.objects.filter(user=request.user).order_by('-date')
-    return render(request, 'expenses/home.html', {'expenses': expenses})
+
+    # Calculate monthly total for current month
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    monthly_total = Expense.objects.filter(
+        user=request.user,
+        date__year=current_year,
+        date__month=current_month
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    return render(request, 'expenses/home.html', {
+        'expenses': expenses,
+        'monthly_total': monthly_total,
+        'current_month': datetime.now().strftime('%B %Y')
+    })
 
 @login_required
 def add_expense_view(request):
@@ -56,6 +74,29 @@ def delete_expense_view(request, expense_id):
     expense.delete()
     messages.success(request, 'Expense deleted successfully.')
     return redirect('home')
+
+@login_required
+def expenses_day_view(request):
+    from datetime import date
+    today = date.today()
+    expenses = Expense.objects.filter(user=request.user, date=today).order_by('-date')
+    return render(request, 'expenses/expenses_day.html', {'expenses': expenses, 'filter_date': today})
+
+@login_required
+def expenses_week_view(request):
+    from datetime import date, timedelta
+    today = date.today()
+    week_start = today - timedelta(days=today.weekday())
+    week_end = week_start + timedelta(days=6)
+    expenses = Expense.objects.filter(user=request.user, date__range=[week_start, week_end]).order_by('-date')
+    return render(request, 'expenses/expenses_week.html', {'expenses': expenses, 'week_start': week_start, 'week_end': week_end})
+
+@login_required
+def expenses_month_view(request):
+    from datetime import date
+    today = date.today()
+    expenses = Expense.objects.filter(user=request.user, date__year=today.year, date__month=today.month).order_by('-date')
+    return render(request, 'expenses/expenses_month.html', {'expenses': expenses, 'current_month': today.strftime('%B %Y')})
 
 @login_required
 def monthly_reports_view(request):
