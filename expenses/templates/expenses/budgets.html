@@ -1,0 +1,43 @@
+{% extends "expenses/base.html" %}
+
+{% block title %}Budgets{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-header">
+        <h2>Your Budgets</h2>
+        <a href="{% url 'add_budget' %}" class="btn btn-primary">Add New Budget</a>
+    </div>
+
+    {% if budgets %}
+        <div class="budgets-grid">
+            {% for budget in budgets %}
+                <div class="budget-card">
+                    <div class="budget-header">
+                        <h3>{{ budget.category }}</h3>
+                        <div class="budget-actions">
+                            <a href="{% url 'edit_budget' budget.id %}" class="btn btn-secondary btn-small">Edit</a>
+                            <a href="{% url 'delete_budget' budget.id %}" class="btn btn-danger btn-small" onclick="return confirm('Are you sure you want to delete this budget?')">Delete</a>
+                        </div>
+                    </div>
+                    <div class="budget-details">
+                        <p class="budget-amount">${{ budget.amount|floatformat:2 }}</p>
+                        <p class="budget-month">{{ budget.month|date:"F Y" }}</p>
+                        {% if budget.is_overall %}
+                            <span class="budget-type overall">Overall Budget</span>
+                        {% else %}
+                            <span class="budget-type category">Category Budget</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No budgets set yet</h3>
+            <p>Start by setting your monthly budgets to track your spending better.</p>
+            <a href="{% url 'add_budget' %}" class="btn btn-primary">Create Your First Budget</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
