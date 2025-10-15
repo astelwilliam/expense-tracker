@@ -1,0 +1,32 @@
+{% extends "expenses/base.html" %}
+
+{% block title %}Daily Expenses{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="filter-header">
+        <h2>Expenses for {{ filter_date|date:"F j, Y" }}</h2>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+
+    <div class="expenses-section">
+        {% if expenses %}
+            <div class="expense-list">
+                {% for expense in expenses %}
+                    <div class="expense-item">
+                        <div class="expense-info">
+                            <strong>{{ expense.title }}</strong> - ${{ expense.amount }} - {{ expense.category }}
+                            {% if expense.notes %}
+                                <br><small>{{ expense.notes }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="expense-date">{{ expense.date }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-expenses">No expenses for this day.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

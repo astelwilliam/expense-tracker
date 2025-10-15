@@ -46,6 +46,13 @@
                     <div class="error">{{ form.category.errors }}</div>
                 {% endif %}
             </div>
+            <div class="form-group">
+                {{ form.notes.label_tag }}
+                {{ form.notes }}
+                {% if form.notes.errors %}
+                    <div class="error">{{ form.notes.errors }}</div>
+                {% endif %}
+            </div>
             <button type="submit" class="btn btn-primary">Add Expense</button>
         </form>
     </div>

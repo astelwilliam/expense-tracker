@@ -6,6 +6,10 @@
 <div class="container">
     <div class="welcome-section">
         <h2>Welcome, {{ user.username }}</h2>
+        <div class="monthly-summary">
+            <h3>Monthly Summary</h3>
+            <p>Total spent in {{ current_month }}: <strong>${{ monthly_total|floatformat:2 }}</strong></p>
+        </div>
         <div class="action-buttons">
             <a href="{% url 'add_expense' %}" class="btn btn-secondary">Add Expense</a>
             <a href="{% url 'monthly_reports' %}" class="btn btn-secondary">View Reports</a>
@@ -21,6 +25,9 @@
                     <div class="expense-item">
                         <div class="expense-info">
                             <strong>{{ expense.title }}</strong> - ${{ expense.amount }} - {{ expense.category }}
+                            {% if expense.notes %}
+                                <br><small>{{ expense.notes }}</small>
+                            {% endif %}
                         </div>
                         <div class="expense-date">{{ expense.date }}</div>
                         <form method="post" action="{% url 'delete_expense' expense.id %}" style="display: inline;">

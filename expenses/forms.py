@@ -18,9 +18,10 @@ class LoginForm(AuthenticationForm):
 class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
-        fields = ['title', 'amount', 'date', 'category']
+        fields = ['title', 'amount', 'date', 'category', 'notes']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'category': forms.Select(attrs={'class': 'form-select'}),
+            'notes': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Optional notes...'}),
         }
 
