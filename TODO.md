@@ -1,0 +1,28 @@
+# TODO: Enhance Expense Tracker with Categories, Monthly Reports, Charts, and Improved Styling
+
+## Steps to Complete
+
+- [x] Add 'category' field to Expense model with predefined choices (Food, Travel, Utilities, Entertainment, Other)
+- [x] Create and run Django migration for the new category field
+- [x] Update ExpenseForm to include category field as select dropdown
+- [x] Modify add_expense.html template to display category field
+- [x] Update home.html template to show category in expense list and extend base.html
+- [x] Update login.html and signup.html templates to extend base.html
+- [x] Add monthly_reports view that groups expenses by month/year and calculates totals
+- [x] Create monthly_reports.html template with Chart.js pie chart (expenses by category) and bar chart (monthly totals)
+- [x] Add URL for monthly_reports view in expenses/urls.py
+- [x] Update base.html to include Chart.js CDN link and ensure all templates extend it
+- [x] Enhance style.css with modern CSS: responsive design, color scheme, typography, animations (fade-in, hover effects, smooth transitions)
+- [x] Update templates to use CSS classes for consistent styling and animations
+- [x] Run migrations to apply model changes
+- [x] Test adding expenses with categories
+- [x] Test monthly reports view and charts rendering
+- [x] Verify styling and animations across all pages
+
+## Add Delete Functionality for Expenses
+
+- [x] Add delete_expense_view in views.py with login_required, ownership check, and redirect
+- [x] Add URL pattern for delete in expenses/urls.py
+- [x] Update home.html to include delete buttons/forms for each expense
+- [x] Add CSS styling for delete buttons in style.css
+- [ ] Test deleting expenses and verify security (only own expenses)

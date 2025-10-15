@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Expense Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'expenses/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <h1>Expense Tracker</h1>
+            {% if user.is_authenticated %}
+                <nav class="nav-links">
+                    <a href="{% url 'home' %}" class="nav-link">Home</a>
+                    <a href="{% url 'add_expense' %}" class="nav-link">Add Expense</a>
+                    <a href="{% url 'monthly_reports' %}" class="nav-link">Reports</a>
+                    <a href="{% url 'logout' %}" class="nav-link logout">Logout</a>
+                </nav>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2024 Expense Tracker. All rights reserved.</p>
+    </footer>
+</body>
+</html>

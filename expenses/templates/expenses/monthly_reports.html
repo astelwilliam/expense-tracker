@@ -1,0 +1,150 @@
+{% extends "expenses/base.html" %}
+
+{% block title %}Monthly Reports{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="reports-header">
+        <h2>Monthly Reports</h2>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+
+    <div class="charts-section">
+        <div class="chart-container">
+            <h3>Expenses by Category</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>Monthly Totals</h3>
+            <canvas id="monthlyChart"></canvas>
+        </div>
+    </div>
+
+    <div class="summary-section">
+        <div class="summary-table">
+            <h3>Monthly Summary</h3>
+            {% if monthly_totals %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for total in monthly_totals %}
+                            <tr>
+                                <td>{{ total.month|date:"F Y" }}</td>
+                                <td>${{ total.total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No expenses to display.</p>
+            {% endif %}
+        </div>
+
+        <div class="summary-table">
+            <h3>Category Summary</h3>
+            {% if category_totals %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for total in category_totals %}
+                            <tr>
+                                <td>{{ total.category }}</td>
+                                <td>${{ total.total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No expenses to display.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Category Pie Chart
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+        type: 'pie',
+        data: {
+            labels: {{ category_labels|safe }},
+            datasets: [{
+                data: {{ category_data|safe }},
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF'
+                ],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': $' + context.parsed.toFixed(2);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Monthly Bar Chart
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ monthly_labels|safe }},
+            datasets: [{
+                label: 'Total Expenses',
+                data: {{ monthly_data|safe }},
+                backgroundColor: '#36A2EB',
+                borderColor: '#36A2EB',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toFixed(2);
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Total: $' + context.parsed.y.toFixed(2);
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
