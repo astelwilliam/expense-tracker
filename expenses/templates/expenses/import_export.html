@@ -1,0 +1,104 @@
+{% extends 'expenses/base.html' %}
+
+{% block title %}Import/Export Expenses{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Import/Export Expenses</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Export Section -->
+                    <div class="mb-4">
+                        <h4>Export Expenses</h4>
+                        <p>Download your expenses in CSV, Excel, or PDF format.</p>
+
+                        <!-- Date Range Filter -->
+                        <form method="get" action="{% url 'export_expenses' %}" class="mb-3" id="export-form">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="start_date" class="form-label">Start Date (Optional)</label>
+                                    <input type="date" name="start_date" id="start_date" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="end_date" class="form-label">End Date (Optional)</label>
+                                    <input type="date" name="end_date" id="end_date" class="form-control">
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <button type="button" class="btn btn-secondary w-100" onclick="clearDates()">Clear Dates</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Direct Download Buttons -->
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <a href="{% url 'export_expenses' %}?format=csv&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}"
+                                   class="btn btn-success w-100" download>
+                                    <i class="fas fa-download"></i> Download CSV
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <a href="{% url 'export_expenses' %}?format=excel&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}"
+                                   class="btn btn-success w-100" download>
+                                    <i class="fas fa-download"></i> Download Excel
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <a href="{% url 'export_expenses' %}?format=pdf&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}"
+                                   class="btn btn-success w-100" download>
+                                    <i class="fas fa-download"></i> Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i>
+                                Leave dates empty to export all expenses. Files will download automatically when clicked.
+                            </small>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Import Section -->
+                    <div>
+                        <h4>Import Expenses</h4>
+                        <p>Upload a CSV or Excel file to import expenses. The file should have columns: date, title, amount, category, notes.</p>
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Choose File</label>
+                                <input type="file" name="file" id="file" class="form-control" accept=".csv,.xlsx,.xls" required>
+                                <div class="form-text">
+                                    Supported formats: CSV, Excel (.xlsx, .xls)
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Import Expenses</button>
+                        </form>
+
+                        <div class="mt-3">
+                            <h6>CSV Format Example:</h6>
+                            <pre class="bg-light p-2 small">date,title,amount,category,notes
+2024-01-15,Groceries,85.50,Food,Weekly shopping
+2024-01-16,Gas,45.00,Transportation,Fuel for car</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function clearDates() {
+    document.getElementById('start_date').value = '';
+    document.getElementById('end_date').value = '';
+}
+</script>
+{% endblock %}

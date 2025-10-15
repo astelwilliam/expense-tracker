@@ -1,0 +1,77 @@
+{% extends "expenses/base.html" %}
+
+{% block title %}Recurring Expenses{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header-section">
+        <h1>Recurring Expenses</h1>
+        <div class="header-actions">
+            <a href="{% url 'add_recurring_expense' %}" class="btn btn-primary">Add Recurring Expense</a>
+            <a href="{% url 'generate_recurring_expenses' %}" class="btn btn-secondary">Generate Today's Expenses</a>
+        </div>
+    </div>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if recurring_expenses %}
+        <div class="expenses-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Frequency</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in recurring_expenses %}
+                        <tr>
+                            <td>{{ expense.title }}</td>
+                            <td>${{ expense.amount }}</td>
+                            <td>{{ expense.category }}</td>
+                            <td>{{ expense.frequency|title }}</td>
+                            <td>{{ expense.start_date|date:"M d, Y" }}</td>
+                            <td>
+                                {% if expense.end_date %}
+                                    {{ expense.end_date|date:"M d, Y" }}
+                                {% else %}
+                                    Ongoing
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if expense.is_active %}
+                                    <span class="status-active">Active</span>
+                                {% else %}
+                                    <span class="status-inactive">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td class="actions">
+                                <a href="{% url 'edit_recurring_expense' expense.id %}" class="btn btn-small btn-secondary">Edit</a>
+                                <a href="{% url 'delete_recurring_expense' expense.id %}" class="btn btn-small btn-danger" onclick="return confirm('Are you sure you want to delete this recurring expense?')">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No recurring expenses yet</h3>
+            <p>Set up recurring expenses for rent, subscriptions, and other regular payments.</p>
+            <a href="{% url 'add_recurring_expense' %}" class="btn btn-primary">Add Your First Recurring Expense</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

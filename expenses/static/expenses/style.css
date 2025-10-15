@@ -274,8 +274,13 @@ body {
 .action-buttons {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+.spacer {
+    height: 2rem;
 }
 
 /* Expense List */

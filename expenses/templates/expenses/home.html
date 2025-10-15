@@ -9,13 +9,30 @@
         <div class="monthly-summary">
             <h3>Monthly Summary</h3>
             <p>Total spent in {{ current_month }}: <strong>${{ monthly_total|floatformat:2 }}</strong></p>
-        </div>
-        <div class="action-buttons">
-            <a href="{% url 'add_expense' %}" class="btn btn-secondary">Add Expense</a>
-            <a href="{% url 'monthly_reports' %}" class="btn btn-secondary">View Reports</a>
-            <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            {% if overall_budget %}
+                <div class="budget-widget {% if budget_alert %}budget-{{ budget_alert }}{% endif %}">
+                    <p>Budget: ${{ overall_budget.amount|floatformat:2 }}</p>
+                    <p>Remaining: <strong>${{ budget_remaining|floatformat:2 }}</strong></p>
+                    {% if budget_alert == "exceeded" %}
+                        <p class="budget-alert">🚨 Budget exceeded!</p>
+                    {% elif budget_alert == "warning" %}
+                        <p class="budget-alert">⚠️ Approaching budget limit</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <a href="{% url 'add_budget' %}" class="btn btn-primary">Set Monthly Budget</a>
+            {% endif %}
         </div>
     </div>
+
+    <div class="action-buttons">
+        <a href="{% url 'add_expense' %}" class="btn btn-secondary">Add Expense</a>
+        <a href="{% url 'budgets' %}" class="btn btn-secondary">Manage Budgets</a>
+        <a href="{% url 'monthly_reports' %}" class="btn btn-secondary">View Reports</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+
+    <div class="spacer"></div>
 
     <div class="expenses-section">
         <h3>Your Expenses</h3>

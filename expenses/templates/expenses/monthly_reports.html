@@ -29,6 +29,8 @@
                         <tr>
                             <th>Month</th>
                             <th>Total Amount</th>
+                            <th>Budget</th>
+                            <th>Variance</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,6 +38,28 @@
                             <tr>
                                 <td>{{ total.month|date:"F Y" }}</td>
                                 <td>${{ total.total }}</td>
+                                <td>
+                                    {% for budget in budgets %}
+                                        {% if budget.month == total.month and budget.category == 'Overall' %}
+                                            ${{ budget.amount|floatformat:2 }}
+                                        {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% for budget in budgets %}
+                                        {% if budget.month == total.month and budget.category == 'Overall' %}
+                                            {% if budget.amount >= total.total %}
+                                                <span class="positive">${{ budget.amount|add:"-"|add:total.total|floatformat:2 }}</span>
+                                            {% else %}
+                                                <span class="negative">${{ budget.amount|add:"-"|add:total.total|floatformat:2 }}</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

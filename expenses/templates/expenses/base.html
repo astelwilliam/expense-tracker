@@ -49,10 +49,12 @@
                 <nav class="nav-links">
                     <a href="{% url 'home' %}" class="nav-link">Home</a>
                     <a href="{% url 'add_expense' %}" class="nav-link">Add Expense</a>
+                    <a href="{% url 'budgets' %}" class="nav-link">Budgets</a>
                     <a href="{% url 'expenses_day' %}" class="nav-link">Today</a>
                     <a href="{% url 'expenses_week' %}" class="nav-link">This Week</a>
                     <a href="{% url 'expenses_month' %}" class="nav-link">This Month</a>
                     <a href="{% url 'monthly_reports' %}" class="nav-link">Reports</a>
+                    <a href="{% url 'import_export' %}" class="nav-link">Import/Export</a>
                     <a href="{% url 'logout' %}" class="nav-link logout">Logout</a>
                 </nav>
             {% endif %}

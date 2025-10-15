@@ -38,3 +38,18 @@
 - [x] Create templates for filtered views (extend base.html)
 - [x] Enhance home page with basic monthly summary (total spent this month)
 - [x] Update navigation to include links to filtered views
+
+## Phase 2: Budgeting & Alerts
+
+- [ ] Add Budget model with fields: user (ForeignKey), category (CharField with choices), amount (DecimalField), month (DateField), is_overall (BooleanField)
+- [ ] Create and run migration for Budget model
+- [ ] Add BudgetForm for creating/editing budgets
+- [ ] Create budget management views: list_budgets, add_budget, edit_budget, delete_budget
+- [ ] Add URL patterns for budget views
+- [ ] Create budget templates: budgets.html, add_budget.html, edit_budget.html
+- [ ] Update navigation to include "Budgets" link
+- [ ] Add budget checking logic in expense creation to show alerts when nearing/exceeding budget
+- [ ] Update home.html to display remaining budget widget
+- [ ] Add budget alerts/messages in templates when spending approaches or exceeds budget limits
+- [ ] Update monthly_reports.html to show budget vs actual spending comparisons
+- [ ] Add CSS styling for budget-related elements and alerts
